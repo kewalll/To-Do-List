@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/todo.css">
+</head>
+<body>
+    <main>
+        <div class="box" id="heading">
+            <h1>To-Do List</h1>
+        </div>
+
+        <div class="box" id="tasks">
+            <% for(let item of listItems){ %>
+                <div class="items">
+                    <form action="/delete" method="post">
+                        <input type="checkbox" name="deleteItem" onchange="this.form.submit()" value="<%= item.id%>">
+                    </form>
+
+                    <p id="title<%=item.id%>"><%= item.task %></p>
+
+                    <form action="/edit" method="post">
+                        <input type="hidden" name="updateItemId" value="<%=item.id %>">
+                        <input type="text" id="input<%=item.id%>" name="updateItemTitle" value="<%= item.title%>" autocomplete="off" autofocus="true" hidden="true">
+                        <button id="done<%=item.id%>" class="edit" type="submit" hidden><img class="icon"
+                            src="/icons/check-solid.svg" alt="tick image"></button>
+                    </form>
+                    <button id="edit<%=item.id%>" class="edit" onclick="handler('<%=item.id%>')"><img class="icon"
+                        src="/icons/pencil-solid.svg" alt="pencil image"></button>
+
+                </div>
+            <% } %>
+
+            <form action="/add" class="items" method="post">
+                <input type="text" name="newItem" placeholder="New Item" autocomplete="off" autofocus="true" />
+                <button class="add" type="submit" name="list" value="ToDo" >+</button>
+            </form>
+            
+        </div>
+
+        <footer>
+            Copyright © <%= new Date().getFullYear() %> Kewal Nanavati
+        </footer>
+
+        <script>
+            function handler(id) {
+                document.getElementById("title" + id).setAttribute("hidden", true);
+                document.getElementById("edit" + id).setAttribute("hidden", true);
+                document.getElementById("done" + id).removeAttribute("hidden");
+                document.getElementById("input" + id).removeAttribute("hidden");
+            }
+        </script>
+    </main>
+</body>
+</html>
